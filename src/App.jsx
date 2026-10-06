@@ -100,7 +100,7 @@ function App() {
       textAlign: { xs: 'center', sm: 'left' }
     }}
   >
-    {/* Gambar */}
+    {/* Gambar 
     <Box
       component="img"
       src={HEADER_IMAGE_URL}
@@ -109,7 +109,7 @@ function App() {
         width: { xs: 124, sm: 124 },
         height: { xs: 64, sm: 64 },
       }}
-    />
+    />*/}
     
     {/* Teks */}
     <Box>

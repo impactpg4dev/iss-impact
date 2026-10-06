@@ -1,6 +1,6 @@
 // Konfigurasi Firebase menggunakan Environment Variables
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getDatabase, ref, get, set } from 'firebase/database';
 
 // Konfigurasi Firebase dari Environment Variables
 const firebaseConfig = {
@@ -28,19 +28,23 @@ try {
 
 // Fungsi untuk mendapatkan konfigurasi spreadsheet dari Realtime Database
 export const getSpreadsheetConfig = async () => {
-  return new Promise((resolve, reject) => {
-    // Path: app_improvement_suggestion_system / spreadsheet_url
-    const configRef = ref(database, 'app_improvement_suggestion_system');
-    onValue(configRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data && data.spreadsheet_url) {
-        resolve({ spreadsheet_url: data.spreadsheet_url });
-      } else {
-        console.warn('Konfigurasi spreadsheet tidak ditemukan di Firebase');
-        reject(new Error('Konfigurasi spreadsheet tidak ditemukan'));
-      }
-    }, { onlyOnce: true });
-  });
+  if (!database) {
+    throw new Error('Firebase database tidak terinisialisasi. Periksa environment variables.');
+  }
+
+  const configRef = ref(database, 'app_improvement_suggestion_system');
+  try {
+    const snapshot = await get(configRef);
+    const data = snapshot.val();
+    if (data && data.spreadsheet_url) {
+      return { spreadsheet_url: data.spreadsheet_url };
+    } else {
+      throw new Error('Konfigurasi spreadsheet tidak ditemukan di Firebase');
+    }
+  } catch (error) {
+    console.error('Gagal mengambil konfigurasi spreadsheet:', error);
+    throw new Error('Gagal mengambil konfigurasi spreadsheet: ' + error.message);
+  }
 };
 
 // Fungsi untuk menyimpan konfigurasi spreadsheet (admin use)

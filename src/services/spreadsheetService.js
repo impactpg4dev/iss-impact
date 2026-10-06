@@ -5,9 +5,8 @@ let cachedWebAppUrl = null;
 
 const getWebAppUrl = async () => {
   if (cachedWebAppUrl) return cachedWebAppUrl;
-  
+
   try {
-    // Ambil konfigurasi dari Firebase Realtime Database
     const config = await getSpreadsheetConfig();
     if (config && config.spreadsheet_url) {
       cachedWebAppUrl = config.spreadsheet_url;
@@ -17,8 +16,8 @@ const getWebAppUrl = async () => {
       throw new Error('spreadsheet_url tidak ditemukan di Firebase');
     }
   } catch (error) {
-    console.error('Error getting web app URL from Firebase:', error);
-    throw new Error('Gagal mengambil konfigurasi spreadsheet dari server');
+    console.error('Error getting web app URL from Firebase:', error);  // <-- ini yang penting
+    throw new Error('Gagal mengambil konfigurasi spreadsheet: ' + error.message);
   }
 };
 
