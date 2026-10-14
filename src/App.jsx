@@ -125,7 +125,7 @@ function App() {
         color: '#37474f',
         fontWeight: 'normal'
       }}>
-        Sampaikan usulan perbaikan, ide inovasi, dan masukan untuk mendukung budaya perbaikan berkelanjutan.
+        Kotak Saran & Kritik Kantor Production Planning
       </h2>
     </Box>
   </Box>
